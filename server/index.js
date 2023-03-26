@@ -37,4 +37,6 @@ app.use("/bootstrap/js", express.static(join(__dirname,"./node_modules/bootstrap
 
 app.listen(3000, () => console.log('server ON'));
 
+export default connection;
+
 

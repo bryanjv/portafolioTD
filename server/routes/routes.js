@@ -1,4 +1,5 @@
 import {response, Router } from "express";
+import  connection  from "../index.js";
 
 const myRouter = Router();
 
@@ -26,14 +27,28 @@ myRouter.post('/auth', function(request, response) {
 				request.session.loggedin = true;
 				request.session.username = username;
 				// Redirect to home page
-				response.redirect('/home');
+				response.redirect('/admin');
+				console.log("hola");
 			} else {
-				response.send('Incorrect Username and/or Password!');
+				console.log("chao");
+				response.render("login",{mensaje:'Incorrect Username and/or Password!'});
 			}			
 			response.end();
 		});
 	} else {
 		response.send('Please enter Username and Password!');
+		response.end();
+	}
+});
+
+myRouter.get('/admin', function(request, response) {
+	// If the user is loggedin
+	if (request.session.loggedin) {
+		// Output username
+		response.render("admin",{saludo:'Welcome back, ' + request.session.username + '!'});
+	} else {
+		// Not logged in
+		response.send('Please login to view this page!');
 		response.end();
 	}
 });
