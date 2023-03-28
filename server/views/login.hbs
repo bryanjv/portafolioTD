@@ -13,10 +13,15 @@
 		<input type="password" name="password" placeholder="Password" id="password" required>
 		<input type="submit" value="Login">
 	</form>
+
+	<a href="/register">Registro</a>
 </div>
 <div>
 	{{#if mensaje}}
 		{{mensaje}}
+	{{/if}}
+	{{#if alerta}}
+		{{alerta}}
 	{{/if}}
 </div>
 {{/template}}

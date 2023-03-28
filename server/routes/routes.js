@@ -1,14 +1,24 @@
 import {response, Router } from "express";
-import  connection  from "../index.js";
+import connection from "../utils/conexion.js";
+import bcrypt from "bcrypt";
+import mysql from "mysql";
 
 const myRouter = Router();
 
 myRouter.get("/", (req,res) => {
-    res.render("index");
+	if(typeof req.session.loggedin === 'undefined'){
+		res.render("index", {loggedin: false});
+	}else{
+		res.render("index", {loggedin: true});
+	}  
 })
 
 myRouter.get("/login", (req,res) => {
     res.render("login");
+})
+
+myRouter.get('/register', (req,res) => {
+	res.render("register");
 })
 
 myRouter.post('/auth', function(request, response) {
@@ -20,6 +30,7 @@ myRouter.post('/auth', function(request, response) {
 		// Execute SQL query that'll select the account from the database based on the specified username and password
 		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
 			// If there is an issue with the query, output the error
+			console.log(fields);
 			if (error) throw error;
 			// If the account exists
 			if (results.length > 0) {
@@ -28,9 +39,7 @@ myRouter.post('/auth', function(request, response) {
 				request.session.username = username;
 				// Redirect to home page
 				response.redirect('/admin');
-				console.log("hola");
 			} else {
-				console.log("chao");
 				response.render("login",{mensaje:'Incorrect Username and/or Password!'});
 			}			
 			response.end();
@@ -40,6 +49,44 @@ myRouter.post('/auth', function(request, response) {
 		response.end();
 	}
 });
+
+myRouter.post('/create', async (req,res) => {
+	let username = req.body.username;
+	let hashedPass = await bcrypt.hash(req.body.password,10);
+	let email = req.body.email;
+	connection.getConnection(async (err, connection) => {
+		if (err) throw (err);
+
+		const sqlSearch = "SELECT * FROM accounts WHERE username = ?";
+		const search_query = mysql.format(sqlSearch, [username]);
+		
+		const sqlInsert = "INSERT INTO accounts VALUES (0,?,?,?)";
+		const insert_query = mysql.format(sqlInsert,[username, hashedPass, email]);
+
+		await connection.query (search_query, async (err, result) => {
+			if (err) throw (err);
+			console.log("----> Search Results");
+			console.log(result);
+
+			if (result.length != 0) {
+				connection.release();
+				console.log("----> User ealready exists");
+				res.render("login", {alerta: "Usuario Ya registrado"});
+			}
+			else {
+				await connection.query(insert_query, (err, result) => {
+
+					connection.release();
+
+					if (err) throw (err);
+					console.log("----> Created new user");
+					console.log(result.insertId);
+					res.render("profile");
+				})
+			}
+		})
+	})
+})
 
 myRouter.get('/admin', function(request, response) {
 	// If the user is loggedin
