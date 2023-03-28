@@ -132,6 +132,10 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
+#contenido{
+    padding: 5%;
+}
+
 #login{
     border: 2px;
     border-radius: 2px solid black;
