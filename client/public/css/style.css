@@ -140,3 +140,29 @@ body {
     border: 2px;
     border-radius: 2px solid black;
 }
+
+.link {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    text-decoration: none;
+    color: #069;
+    cursor: pointer;
+}
+
+.imagen_principal{
+    filter: invert(100%);
+}
+
+div.index img.imagen_principal {
+    float: left;
+    margin-right: 15px;
+}
+
+.texto{
+    font-size: x-large;
+    text-align: center;
+}
