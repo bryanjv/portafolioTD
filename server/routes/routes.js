@@ -1,5 +1,5 @@
 import { Router } from "express";
-import connection from "../utils/conexion.js";
+import DBase from "../utils/Conexion.js";
 import bcrypt from "bcrypt";
 import mysql from "mysql";
 
@@ -13,6 +13,10 @@ myRouter.get("/", (req,res) => {
 	}  
 })
 
+myRouter.get("/profile", (req, res) => {
+	res.render("profile", {loggedin: true});
+});
+
 myRouter.get("/login", (req,res) => {
     res.render("login");
 })
@@ -23,26 +27,30 @@ myRouter.get('/register', (req,res) => {
 })
 
 myRouter.post('/auth', function(req, res) {
+
+	const objmysql = new DBase('X', 'X');
+	const connection = objmysql.createConnection();
+	
 	// Capture the input fields
 	let username = req.body.username;
 	let password = req.body.password;
 	// Ensure the input fields exists and are not empty
 	if (username && password) {
 		// Execute SQL query that'll select the account from the database based on the specified username and password
-		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+		connection.query('SELECT * FROM accounts WHERE username = ?', [username], function(error, results, fields) {
 			// If there is an issue with the query, output the error
 			if (error) throw error;
 			// If the account exists
-			if (results.length > 0) {
+			//if (results.length > 0) {
+			if (bcrypt.compare(password, results[0].password)){
 				// Authenticate the user
 				req.session.loggedin = true;
 				req.session.username = username;
 				// Redirect to home page
-				res.redirect('/admin');
+				res.redirect("/profile");
 			} else {
 				res.render("login",{mensaje:'Incorrect Username and/or Password!'});
 			}			
-			res.end();
 		});
 	} else {
 		res.send('Please enter Username and Password!');
@@ -51,6 +59,10 @@ myRouter.post('/auth', function(req, res) {
 });
 
 myRouter.post('/create', async (req,res) => {
+
+	const objmysql = new DBase('root', '1234');
+	const connection = objmysql.createConnection();
+
 	let username = req.body.username;
 	let hashedPass = await bcrypt.hash(req.body.password,10);
 	let email = req.body.email;
