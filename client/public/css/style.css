@@ -132,19 +132,19 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
-#contenido{
+#contenido {
     padding: 5%;
 }
 
-#login{
+#login {
     border: 2px;
     border-radius: 2px solid black;
 }
 
 .link {
-    background: none!important;
+    background: none !important;
     border: none;
-    padding: 0!important;
+    padding: 0 !important;
     /*optional*/
     font-family: arial, sans-serif;
     /*input has OS specific font-family*/
@@ -153,7 +153,7 @@ body {
     cursor: pointer;
 }
 
-.imagen_principal{
+.imagen_principal {
     filter: invert(100%);
 }
 
@@ -162,7 +162,27 @@ div.index img.imagen_principal {
     margin-right: 15px;
 }
 
-.texto{
+.texto {
     font-size: x-large;
     text-align: center;
+}
+
+main {
+    padding: 5%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: transparent;
 }
