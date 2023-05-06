@@ -1,0 +1,22 @@
+{{#> template}}
+<table>
+    <thead>
+        <tr>
+            <th>Nombre Platillo</th>
+            <th>Categoria</th>
+            <th>Precio</th>
+            <th>Stock</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each menu}}
+        <tr>
+            <td>{{menuname}}</td>
+            <td>{{categoryname}}</td>
+            <td>{{menuprice}}</td>
+            <td>{{stock}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/template}}

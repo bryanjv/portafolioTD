@@ -1,3 +1,14 @@
 {{#> template}}
-    Entro al perfil :3
+    {{#if restaurant}}
+    <ul>
+        <li>{{restaurant.restaurantname}}</li><br>
+        <li>{{restaurant.restaurantphone}}</li><br>
+        <li>{{restaurant.restaurantemail}}</li><br>
+        <li>{{restaurant.restaurantaddress}}</li><br>
+    </ul>
+    {{/if}}
+
+    {{#if user.isemployee}}
+    <a href="/inventory">Inventario del Restaurant</a>
+    {{/if}}
 {{/template}}

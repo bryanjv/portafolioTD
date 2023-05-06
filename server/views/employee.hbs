@@ -1,5 +1,5 @@
 {{#> template}}
-<form action="/create" method="post">
+<form action="/newEmployee" method="post">
 	<label for="username">
 		<i class="fa-solid fa-address-card"></i> Nombre de Usuario
 	</label>
@@ -10,27 +10,28 @@
 	</label>
 	<input type="text" name="name" placeholder="Nombre" id="name" required> <br>
 
-	<label for="phone">
-		<i class="fa-solid fa-phone"></i> Telefono
+    <label for="restaurant">
+		<i class="fa-solid fa-shop"></i> Restaurant
 	</label>
-	<input type="text" name="phone" placeholder="Telefono" id="phone" required> <br>
+    <select name="restaurant" required>
+        <option disabled selected value=""> Selecciona Restaurant de Trabajo</option>
+        {{#each restaurants}}
+        <option value={{restaurantid}}>{{restaurantname}}</option>
+        {{/each}}
+    </select>
+
+    <label for="code">
+		<i class="fa-solid fa-user"></i> Codigo de Autorizacion
+	</label>
+	<input type="text" name="code" placeholder="Codigo de Autorizacion" id="code" required> <br>
 
 	<label for="password">
 		<i class="fas fa-lock"></i> Contraseña
 	</label>
 	<input type="password" name="password" placeholder="Password" id="password" required><br>
 
-	<label for="email">
-		<i class="fas fa-envelope"></i> Correo Electronico
-	</label>
-	<input type="email" name="email" placeholder="Email" id="email" required><br>
-
 	<input type="submit" value="Registrarse" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> 
 </form>
-
-<a href="/new">Soy un Restaurant</a>
-<a href="/employee">Soy un Empleado</a>
-
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -1,10 +1,10 @@
 import express from "express";
-import bodyParser from "body-parser";
 import hbs from "hbs";
 import routes from "./routes/routes.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import session from "express-session";
+import { requestLogger } from "./utils/functions.js";
 
 const app = express();
 
@@ -16,6 +16,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(requestLogger);
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,5 +31,3 @@ app.use("/bootstrap/css", express.static(join(__dirname,"./node_modules/bootstra
 app.use("/bootstrap/js", express.static(join(__dirname,"./node_modules/bootstrap/dist/js")));
 
 app.listen(3000, () => console.log('server ON'));
-
-
